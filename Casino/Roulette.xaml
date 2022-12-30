@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="Roulette" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Button x:Name="Dugme_Ulog" Content="Uloži" HorizontalAlignment="Left" Margin="624,350,0,0" VerticalAlignment="Top" FontSize="20" />
-        <Button x:Name="Igraj" Content="Igraj" HorizontalAlignment="Left" Margin="552,350,0,0" VerticalAlignment="Top" FontSize="20" />
+        <Button x:Name="Dugme_Ulog" Content="Uloži" HorizontalAlignment="Left" Margin="624,350,0,0" VerticalAlignment="Top" FontSize="20" Click="Dugme_Ulog_Click" />
+        <Button x:Name="Igraj" Content="Igraj" HorizontalAlignment="Left" Margin="552,350,0,0" VerticalAlignment="Top" FontSize="20" Click="Igraj_Click" />
         <TextBlock HorizontalAlignment="Left" Margin="522,97,0,0" TextWrapping="Wrap" Text="Brojevi" VerticalAlignment="Top" TextAlignment="Center" FontSize="20"/>
         <ComboBox x:Name="Brojevi" HorizontalAlignment="Left" Margin="604,94,0,0" VerticalAlignment="Top" Width="120" FontSize="20"/>
         <CheckBox x:Name="Crvena" Content="Crvena" HorizontalAlignment="Left" Margin="489,153,0,0" VerticalAlignment="Top" FontSize="20"/>
