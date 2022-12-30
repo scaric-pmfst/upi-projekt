@@ -58,6 +58,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="KupiChipove.xaml.cs">
+      <DependentUpon>KupiChipove.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProdajaChipova.xaml.cs">
+      <DependentUpon>ProdajaChipova.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Roulette.xaml.cs">
       <DependentUpon>Roulette.xaml</DependentUpon>
     </Compile>
@@ -79,6 +85,14 @@
     <Compile Include="GlavniMeni.xaml.cs">
       <DependentUpon>GlavniMeni.xaml</DependentUpon>
     </Compile>
+    <Page Include="KupiChipove.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProdajaChipova.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Roulette.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

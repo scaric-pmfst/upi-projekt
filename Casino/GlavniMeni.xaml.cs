@@ -23,7 +23,10 @@ namespace Casino
         {
             InitializeComponent();
         }
+        
 
+        //Događaji
+        //Događaj kada se stisne dugme "Igraj BlackJack"
         private void IgrajBlackJack_Click(object sender, RoutedEventArgs e)
         {
             Console.WriteLine("BlackJack je pokrenut.");
@@ -36,6 +39,7 @@ namespace Casino
             Console.WriteLine("BlackJack je ugašen.");
         }
 
+        //Događaj kada se stisne dugme "Igraj Roulette"
         private void IgrajRoulette_Click(object sender, RoutedEventArgs e)
         {
             Console.WriteLine("Roulette je pokrenut.");
@@ -48,14 +52,22 @@ namespace Casino
             Console.WriteLine("Roulette je ugašen.");
         }
 
+        //Događaj kada se stisne dugme "Kupi Čipove"
         private void KupiChipove_Click(object sender, RoutedEventArgs e)
         {
-
+            KupiChipove KupiChipove_Prozor = new KupiChipove();
+            KupiChipove_Prozor.ShowDialog();
+            Chipovi.Text = KupiChipove_Prozor.TrenutniChipovi.ToString() + "€";
+            KupiChipove_Prozor.Close();
         }
 
+        //Događaj kada se stisne dugme "Prodaj Čipove"
         private void ProdajChipove_Click(object sender, RoutedEventArgs e)
         {
-
+            ProdajaChipova ProdajChipove_Prozor = new ProdajaChipova();
+            ProdajChipove_Prozor.ShowDialog();
+            Chipovi.Text = ProdajChipove_Prozor.TrenutniChipovi.ToString() + "€";
+            ProdajChipove_Prozor.Close();
         }
     }
 }
