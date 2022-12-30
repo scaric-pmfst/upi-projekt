@@ -1,0 +1,17 @@
+﻿<Window x:Class="Casino.GlavniMeni"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Casino"
+        mc:Ignorable="d"
+        Title="Casino" Height="510" Width="390" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid Margin="10,10,10,10">
+        <Button x:Name="IgrajBlackJack" Content="Igraj BlackJack" HorizontalAlignment="Left" Margin="42,90,0,0" VerticalAlignment="Top" FontSize="36" Grid.ColumnSpan="2" Height="70" FontStyle="Italic" FontWeight="Bold" Click="IgrajBlackJack_Click" />
+        <Button x:Name="IgrajRoulette" Content="Igraj Roulette" HorizontalAlignment="Left" Margin="55,195,0,0" VerticalAlignment="Top" FontSize="36" Grid.ColumnSpan="2" Height="70" FontStyle="Italic" FontWeight="Bold" Click="IgrajRoulette_Click" />
+        <Button x:Name="KupiChipove" Content="Kupi čipove" HorizontalAlignment="Left" Margin="50,380,0,0" VerticalAlignment="Top" FontSize="18" FontStyle="Italic" FontWeight="Bold" Click="KupiChipove_Click" />
+        <Button x:Name="ProdajChipove" Content="Prodaj čipove" HorizontalAlignment="Left" Margin="180,380,0,0" VerticalAlignment="Top" FontSize="18" FontStyle="Italic" FontWeight="Bold" Click="ProdajChipove_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="68,300,0,0" TextWrapping="Wrap" Text="Čipovi:" VerticalAlignment="Top" FontSize="36" FontStyle="Italic" FontWeight="Bold"/>
+        <TextBlock x:Name="Chipovi" HorizontalAlignment="Left" Margin="190,300,0,0" TextWrapping="Wrap" Text="0€" VerticalAlignment="Top" FontSize="36" FontStyle="Italic" FontWeight="Bold"/>
+    </Grid>
+</Window>
