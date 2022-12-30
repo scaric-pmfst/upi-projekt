@@ -26,7 +26,14 @@ namespace Casino
 
         private void IgrajBlackJack_Click(object sender, RoutedEventArgs e)
         {
-
+            Console.WriteLine("BlackJack je pokrenut.");
+            BlackJack BlackJack_Prozor = new BlackJack();
+            this.Visibility = Visibility.Hidden;
+            BlackJack_Prozor.ShowDialog();
+            this.Visibility = Visibility.Visible;
+            BlackJack_Prozor.Close();
+            Chipovi.Text = BlackJack_Prozor.Stanje.Text;
+            Console.WriteLine("BlackJack je ugašen.");
         }
 
         private void IgrajRoulette_Click(object sender, RoutedEventArgs e)
