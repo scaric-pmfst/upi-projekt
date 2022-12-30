@@ -38,7 +38,14 @@ namespace Casino
 
         private void IgrajRoulette_Click(object sender, RoutedEventArgs e)
         {
-
+            Console.WriteLine("Roulette je pokrenut.");
+            Roulette Roulette_Prozor = new Roulette();
+            this.Visibility = Visibility.Hidden;
+            Roulette_Prozor.ShowDialog();
+            this.Visibility = Visibility.Visible;
+            Roulette_Prozor.Close();
+            Chipovi.Text = Roulette_Prozor.Stanje.Text;
+            Console.WriteLine("Roulette je ugašen.");
         }
 
         private void KupiChipove_Click(object sender, RoutedEventArgs e)
