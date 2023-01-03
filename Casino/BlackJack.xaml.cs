@@ -25,8 +25,8 @@ namespace Casino
         List<string> Deck = new List<string>();
         List<string> RukaIgraca = new List<string>();
         List<string> RukaProtivnika = new List<string>();
-        int JakostRukeIgraca, ulozeniNovac;
-        bool IgrajBlackJack;
+        int JakostRukeIgraca, JakostRukeProtivnika, ulozeniNovac;
+        bool IgrajBlackJack, IgracImaAsa, ProtivnikImaAsa;
         double TrenutniChipovi;
 
         public BlackJack()
@@ -46,19 +46,22 @@ namespace Casino
         //Metoda pomoću koje cistimo ruke igrača i protivnika
         private void OcistiRuke()
         {
-            Console.WriteLine("Metoda OcistiRuke");
+            
+            Console.WriteLine("Metoda OcistiRuke.");
             RukaProtivnika.Clear();
             RukaIgraca.Clear();
             ProtivnikovaRuka.Text = "";
             IgracevaRuka.Text = "";
             JakostRukeIgraca = 0;
+            IgracImaAsa = false;
+            ProtivnikImaAsa = false;
             Console.WriteLine("Metoda OcistiRuke izvrsena");
         }
 
         //Metoda pomoću koje pravimo novi dek
         private void NapraviDeck()
         {
-            Console.WriteLine("NapraviDeck Metoda");
+            Console.WriteLine("NapraviDeck Metoda.");
             Deck.Clear();
             foreach (char boja in karte.Boje)
             {
@@ -74,7 +77,7 @@ namespace Casino
         //Metoda pomoću koje dijelimo početne karte igraču i protivniku
         private void PocetnaRuka()
         {
-            Console.WriteLine("Metoda PocetnaRuka");
+            Console.WriteLine("Metoda PocetnaRuka.");
             for (int i = 0; i < 3; i++)
             {
                 List<string> tempDeck = Deck;
@@ -96,6 +99,128 @@ namespace Casino
                 Console.WriteLine("Trenutno je u deku " + Deck.Count + " karata.");
             }
             Console.WriteLine("Metoda PocetnaRuka izvrsena.");
+        }
+
+        //Metoda pomoću koje vučemo kartu
+        private void VuciKartu(string osoba)
+        {
+            Console.WriteLine("Metoda VuciKartu.");
+            List<string> tempDeck = Deck;
+            string izvucenaKarta = tempDeck[r.Next(0, tempDeck.Count)];
+            tempDeck.Remove(izvucenaKarta);
+            if (osoba == "Igrac")
+            {
+                Console.WriteLine("Igraceva Karta: " + izvucenaKarta);
+                IgracevaRuka.Text += izvucenaKarta + "|";
+                RukaIgraca.Add(izvucenaKarta);
+            }
+            else if (osoba == "Protivnik")
+            {
+                Console.WriteLine("Protivnikova karta " + izvucenaKarta);
+                ProtivnikovaRuka.Text += izvucenaKarta + "|";
+                RukaProtivnika.Add(izvucenaKarta);
+            }
+            Deck = tempDeck;
+            Console.WriteLine("Trenutno je u deku " + Deck.Count + " karata.");
+            Console.WriteLine("Metoda VuciKartu izvrsena.");
+        }
+
+        //Metoda pomoću koje brojimo jakost ruke igrača i protivnika
+        private void BrojacRuke(string osoba)
+        {
+            Console.WriteLine("BrojacRuke.");
+            int temp = 0;
+            if (osoba == "Igrac")
+            {
+                Console.WriteLine("Brojanje ruke igrača.");
+                foreach (string karta in RukaIgraca)
+                {
+                    Console.WriteLine("Karta: " + karta);
+                    switch (karta)
+                    {
+                        default: //Ako je karta 2-9
+                            char[] tempArray = karta.ToCharArray();
+                            temp = temp + int.Parse(tempArray[0].ToString());
+                            break;
+                        case string As when karta.StartsWith("A"):
+                            IgracImaAsa = true;
+                            if (temp > 10)
+                            {
+                                temp = temp + 1;
+                            }
+                            else
+                            {
+                                temp = temp + 11;
+                            }
+                            break;
+                        case string Deset when karta.StartsWith("10"):
+                        case string Jukac when karta.StartsWith("J"):
+                        case string Kraljica when karta.StartsWith("Q"):
+                        case string Kralj when karta.StartsWith("K"):
+                            temp = temp + 10;
+                            break;
+                    }
+                    Console.WriteLine("Trenutna jakost ruke: " + temp);
+                }
+                JakostRukeIgraca = temp;
+                Console.WriteLine("Jakost ruke nakon brojanja: " + JakostRukeIgraca);
+            }
+            else if (osoba == "Protivnik")
+            {
+                Console.WriteLine("Brojanje ruke protivnika");
+                foreach (string karta in RukaProtivnika)
+                {
+                    Console.WriteLine("Karta: " + karta);
+                    switch (karta)
+                    {
+                        default: //Ako je karta 2-9
+                            char[] tempArray = karta.ToCharArray();
+                            temp = temp + int.Parse(tempArray[0].ToString());
+                            break;
+                        case string As when karta.StartsWith("A"):
+                            ProtivnikImaAsa = true;
+                            if (temp > 10)
+                            {
+                                temp = temp + 1;
+                            }
+                            else
+                            {
+                                temp = temp + 11;
+                            }
+                            break;
+                        case string Deset when karta.StartsWith("10"):
+                        case string Jukac when karta.StartsWith("J"):
+                        case string Kraljica when karta.StartsWith("Q"):
+                        case string Kralj when karta.StartsWith("K"):
+                            temp = temp + 10;
+                            break;
+                    }
+                    Console.WriteLine("Trenutna jakost ruke: " + temp);
+                }
+                JakostRukeProtivnika = temp;
+                Console.WriteLine("Jakost ruke nakon brojanja: " + JakostRukeProtivnika);
+            }
+        }
+
+        //Metoda pomoću koje proveravamo jakost ruke igrača, ako je veća od 21, igrač je izgubio
+        private void ProvjeraRukeIgraca()
+        {
+            if (JakostRukeIgraca > 21)
+            {
+                if (!IgracImaAsa)
+                {
+                    MessageBox.Show("Izgubio si. Više sreće drugi put.");
+                    IgrajBlackJack = false;
+                }
+                else
+                {
+                    if ((JakostRukeIgraca - 10) > 21)
+                    {
+                        MessageBox.Show("Izgubio si. Više sreće drugi put.");
+                        IgrajBlackJack = false;
+                    }
+                }
+            }
         }
         //Događaji
         private void Igraj_Click(object sender, RoutedEventArgs e)
@@ -124,12 +249,38 @@ namespace Casino
                 OcistiRuke();
                 NapraviDeck();
                 PocetnaRuka();
+                IgrajBlackJack = true;
             }
             else
             {
                 MessageBox.Show("Igra je u tijeku");
                 return;
             }
+        }
+
+        private void Hit_Click(object sender, RoutedEventArgs e)
+        {
+            if (IgrajBlackJack)
+            {
+                VuciKartu("Igrac");
+                BrojacRuke("Igrac");
+                ProvjeraRukeIgraca();
+            }
+            else
+            {
+                MessageBox.Show("Igra je gotova. Stisnite na dugme Započni Igru da pokrenete novu igru");
+                return;
+            }
+        }
+
+        private void Stand_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DoubleDown_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
     

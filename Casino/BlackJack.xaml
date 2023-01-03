@@ -8,9 +8,9 @@
         Title="BlackJack" Height="340" Width="705" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Button x:Name="Igraj" Content="Započni igru" HorizontalAlignment="Left" Margin="460,248,0,0" VerticalAlignment="Top" FontSize="20" Click="Igraj_Click" />
-        <Button x:Name="Hit" Content="Hit" HorizontalAlignment="Left" Margin="387,139,0,0" VerticalAlignment="Top" FontSize="20" Width="60" />
-        <Button x:Name="Stand" Content="Stand" HorizontalAlignment="Left" Margin="452,139,0,0" VerticalAlignment="Top" FontSize="20" Width="60" />
-        <Button x:Name="DoubleDown" Content="Double Down" HorizontalAlignment="Left" Margin="517,139,0,0" VerticalAlignment="Top" FontSize="20" Width="140"/>
+        <Button x:Name="Hit" Content="Hit" HorizontalAlignment="Left" Margin="387,139,0,0" VerticalAlignment="Top" FontSize="20" Width="60" Click="Hit_Click" />
+        <Button x:Name="Stand" Content="Stand" HorizontalAlignment="Left" Margin="452,139,0,0" VerticalAlignment="Top" FontSize="20" Width="60" Click="Stand_Click" />
+        <Button x:Name="DoubleDown" Content="Double Down" HorizontalAlignment="Left" Margin="517,139,0,0" VerticalAlignment="Top" FontSize="20" Width="140" Click="DoubleDown_Click"/>
         <TextBlock HorizontalAlignment="Left" Margin="84,24,0,0" TextWrapping="Wrap" Text="Protivnikova Ruka:" VerticalAlignment="Top" TextAlignment="Center" FontSize="36"/>
         <TextBlock x:Name="ProtivnikovaRuka" HorizontalAlignment="Left" Margin="380,24,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" TextAlignment="Center" FontSize="36"/>
         <TextBlock HorizontalAlignment="Left" Margin="197,77,0,0" TextWrapping="Wrap" Text="Tvoja Ruka:" VerticalAlignment="Top" TextAlignment="Center" FontSize="36"/>
