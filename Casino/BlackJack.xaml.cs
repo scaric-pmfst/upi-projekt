@@ -26,8 +26,10 @@ namespace Casino
         List<string> RukaIgraca = new List<string>();
         List<string> RukaProtivnika = new List<string>();
         int JakostRukeIgraca, JakostRukeProtivnika, ulozeniNovac;
-        bool IgrajBlackJack, IgracImaAsa, ProtivnikImaAsa;
+        bool IgrajBlackJack = false;
+        bool IgracImaAsa, ProtivnikImaAsa;
         double TrenutniChipovi;
+
 
         public BlackJack()
         {
@@ -143,7 +145,7 @@ namespace Casino
                             temp = temp + int.Parse(tempArray[0].ToString());
                             break;
                         case string As when karta.StartsWith("A"):
-                            IgracImaAsa = true;
+                            
                             if (temp > 10)
                             {
                                 temp = temp + 1;
@@ -151,6 +153,7 @@ namespace Casino
                             else
                             {
                                 temp = temp + 11;
+                                IgracImaAsa = true;
                             }
                             break;
                         case string Deset when karta.StartsWith("10"):
@@ -178,7 +181,7 @@ namespace Casino
                             temp = temp + int.Parse(tempArray[0].ToString());
                             break;
                         case string As when karta.StartsWith("A"):
-                            ProtivnikImaAsa = true;
+                            
                             if (temp > 10)
                             {
                                 temp = temp + 1;
@@ -186,6 +189,7 @@ namespace Casino
                             else
                             {
                                 temp = temp + 11;
+                                ProtivnikImaAsa = true;
                             }
                             break;
                         case string Deset when karta.StartsWith("10"):
@@ -203,6 +207,7 @@ namespace Casino
         }
 
         //Metoda pomoću koje proveravamo jakost ruke igrača, ako je veća od 21, igrač je izgubio
+        //Metoda pomoću koje proveravamo jakost ruke igrača
         private void ProvjeraRukeIgraca()
         {
             if (JakostRukeIgraca > 21)
@@ -222,6 +227,74 @@ namespace Casino
                 }
             }
         }
+
+        //Metoda kojom program kontrolira protivnika
+        private void ProtivnikIgra()
+        {
+            while (true)
+            {
+                VuciKartu("Protivnik");
+                BrojacRuke("Protivnik");
+                if (JakostRukeProtivnika >= JakostRukeIgraca)
+                {
+                    break;
+                }
+            }
+            ProvjeraRuku();
+        }
+
+        //Metoda kojom provjeravamo protivnikovu ruku i uspoređujemo jakosti obje ruke
+        private void ProvjeraRuku()
+        {
+            if (JakostRukeProtivnika > 21)
+            {
+                if (ProtivnikImaAsa)
+                {
+                    if ((JakostRukeProtivnika - 10) > 21)
+                    {
+                        MessageBox.Show("Dobili ste.");
+                        IgrajBlackJack = false;
+                    }
+                    else
+                    {
+                        if ((JakostRukeProtivnika - 10) > JakostRukeIgraca)
+                        {
+                            MessageBox.Show("Izgubio si. Više sreće drugi put.");
+                            IgrajBlackJack = false;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Dobili ste.");
+                            IgrajBlackJack = false;
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Dobili ste.");
+                    IgrajBlackJack = false;
+                }
+            }
+            else
+            {
+                if (JakostRukeProtivnika > JakostRukeIgraca)
+                {
+                    MessageBox.Show("Izgubio si. Više sreće drugi put.");
+                    IgrajBlackJack = false;
+                }
+                else if (JakostRukeProtivnika == JakostRukeIgraca)
+                {
+                    MessageBox.Show("Neriješeno.");
+                    IgrajBlackJack = false;
+                }
+                else
+                {
+                    MessageBox.Show("Dobili ste.");
+                    IgrajBlackJack = false;
+                }
+            }
+        }
+
         //Događaji
         private void Igraj_Click(object sender, RoutedEventArgs e)
         {
@@ -275,6 +348,17 @@ namespace Casino
 
         private void Stand_Click(object sender, RoutedEventArgs e)
         {
+            if (IgrajBlackJack)
+            {
+                BrojacRuke("Igrac");
+                ProvjeraRukeIgraca();
+                ProtivnikIgra();
+            }
+            else
+            {
+                MessageBox.Show("Igra je gotova. Stisnite na dugme Započni Igru da pokrenete novu igru");
+                return;
+            }
 
         }
 
