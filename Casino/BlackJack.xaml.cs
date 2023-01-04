@@ -226,6 +226,11 @@ namespace Casino
                     }
                 }
             }
+            else if (JakostRukeIgraca == 21 && RukaIgraca.Count == 2)
+            {
+                MessageBox.Show("BlackJack. Dobio si.");
+                IgrajBlackJack = false;
+            }
         }
 
         //Metoda kojom program kontrolira protivnika
@@ -323,6 +328,7 @@ namespace Casino
                 NapraviDeck();
                 PocetnaRuka();
                 IgrajBlackJack = true;
+                ProvjeraRukeIgraca();
             }
             else
             {
@@ -353,6 +359,10 @@ namespace Casino
                 BrojacRuke("Igrac");
                 ProvjeraRukeIgraca();
                 ProtivnikIgra();
+                if (IgrajBlackJack)
+                {
+                    ProtivnikIgra();
+                }
             }
             else
             {
@@ -364,7 +374,21 @@ namespace Casino
 
         private void DoubleDown_Click(object sender, RoutedEventArgs e)
         {
-
+            if (IgrajBlackJack)
+            {
+                VuciKartu("Igrac");
+                BrojacRuke("Igrac");
+                ProvjeraRukeIgraca();
+                if (IgrajBlackJack)
+                {
+                    ProtivnikIgra();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Igra je gotova. Stisnite na dugme Započni Igru da pokrenete novu igru");
+                return;
+            }
         }
     }
     
