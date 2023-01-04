@@ -24,6 +24,7 @@ namespace Casino
         List<string> ulozeneStvari = new List<string>();
         double ulozeniNovac;
         double TrenutniChipovi;
+
         public Roulette()
         {
             InitializeComponent();
@@ -61,6 +62,7 @@ namespace Casino
                 {
                     brojevi.Add(i, "Crna");
                 }
+                Brojevi.Items.Add(i);
             }
             for (int i = 11; i < 20; i++)
             {
@@ -72,6 +74,7 @@ namespace Casino
                 {
                     brojevi.Add(i, "Crvena");
                 }
+                Brojevi.Items.Add(i);
             }
             for (int i = 20; i < 29; i++)
             {
@@ -83,6 +86,7 @@ namespace Casino
                 {
                     brojevi.Add(i, "Crna");
                 }
+                Brojevi.Items.Add(i);
             }
             for (int i = 29; i < 37; i++)
             {
@@ -94,6 +98,7 @@ namespace Casino
                 {
                     brojevi.Add(i, "Crvena");
                 }
+                Brojevi.Items.Add(i);
             }
             foreach (int broj in brojevi.Keys)
             {
@@ -102,13 +107,132 @@ namespace Casino
             Console.WriteLine("Metoda DodavanjeBrojeva izvršena.");
         }
 
-
-        private void Igraj_Click(object sender, RoutedEventArgs e)
+        //Metoda pomoću koje provjeravamo na što sve igrač želi uložiti novac
+        private int BrojUloga()
         {
+            Console.WriteLine("Metoda ulogNovca.");
+            ulozeneStvari.Clear();
+            int brojUloga = 0;
+            if (Brojevi.SelectedIndex > -1)
+            {
+                ulozeneStvari.Add(Brojevi.SelectedItem.ToString());
+                if (!ulog.ContainsKey(Brojevi.SelectedItem.ToString()))
+                {
+                    ulog.Add(Brojevi.SelectedItem.ToString(), 0);
+                }
+                brojUloga++;
+            }
+            if (Crvena.IsChecked == true)
+            {
+                ulozeneStvari.Add("Crvena");
+                if (!ulog.ContainsKey("Crvena"))
+                {
+                    ulog.Add("Crvena", 0);
+                }
+                brojUloga++;
+            }
+            if (Crna.IsChecked == true)
+            {
+                if (!ulozeneStvari.Contains("Crna"))
+                {
+                    ulozeneStvari.Add("Crna");
+                    if (!ulog.ContainsKey("Crna"))
+                    {
+                        ulog.Add("Crna", 0);
+                    }
+                }
+                brojUloga++;
+            }
+            if (Zelena.IsChecked == true)
+            {
+                ulozeneStvari.Add("Zelena");
+                if (!ulog.ContainsKey("Zelena"))
+                {
+                    ulog.Add("Zelena", 0);
+                }
+                brojUloga++;
+            }
+            if (Paran.IsChecked == true)
+            {
+                ulozeneStvari.Add("Paran");
+                if (!ulog.ContainsKey("Paran"))
+                {
+                    ulog.Add("Paran", 0);
+                }
+                brojUloga++;
+            }
+            if (Neparan.IsChecked == true)
+            {
+                ulozeneStvari.Add("Neparan");
+                if (!ulog.ContainsKey("Neparan"))
+                {
+                    ulog.Add("Neparan", 0);
+                }
+                brojUloga++;
+            }
+            if (Low.IsChecked == true)
+            {
+                ulozeneStvari.Add("Low");
+                if (!ulog.ContainsKey("Low"))
+                {
+                    ulog.Add("Low", 0);
+                }
+                brojUloga++;
+            }
+            if (High.IsChecked == true)
+            {
+                ulozeneStvari.Add("High");
+                if (!ulog.ContainsKey("High"))
+                {
+                    ulog.Add("High", 0);
+                }
+                brojUloga++;
+            }
+            Console.WriteLine("Metoda ulogNovca izvršena.");
+            return brojUloga;
+        }
 
+        //Metoda pomoću koje ulažemo na sve što je igrač odabrao
+        private void Ulozi(double raspodjeljeniUlog)
+        {
+            foreach (string item in ulozeneStvari)
+            {
+                ulog[item] += raspodjeljeniUlog;
+            }
+
+            foreach (string item in ulog.Keys)
+            {
+                Console.WriteLine(item + ":" + ulog[item]);
+            }
         }
 
         private void Dugme_Ulog_Click(object sender, RoutedEventArgs e)
+        {
+            if (Ulog.Text.Length < 1)
+            {
+                MessageBox.Show("Niste ništa uložili.");
+                return;
+            }
+            try
+            {
+                ulozeniNovac = double.Parse(Ulog.Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Niste dobro unijeli novac.");
+                return;
+            }
+            if (ulozeniNovac == 0)
+            {
+                MessageBox.Show("Ulog ne može biti 0.");
+                return;
+            }
+            int brojUloga = BrojUloga();
+            double raspodjeljeniUlog = ulozeniNovac / brojUloga;
+            Console.WriteLine("Raspodjeljeni Ulog: " + raspodjeljeniUlog.ToString());
+            Ulozi(raspodjeljeniUlog);
+        }
+        private void Igraj_Click(object sender, RoutedEventArgs e)
         {
 
         }
