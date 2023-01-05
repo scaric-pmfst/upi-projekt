@@ -52,8 +52,8 @@ namespace Casino
             Console.WriteLine("Metoda OcistiRuke.");
             RukaProtivnika.Clear();
             RukaIgraca.Clear();
-            ProtivnikovaRuka.Text = "";
-            IgracevaRuka.Text = "";
+            ProtivnikovaRuka.Inlines.Clear();
+            IgracevaRuka.Inlines.Clear();
             JakostRukeIgraca = 0;
             IgracImaAsa = false;
             ProtivnikImaAsa = false;
@@ -88,13 +88,27 @@ namespace Casino
                 if (i != 1)
                 {
                     Console.WriteLine("Igraceva Karta: " + izvucenaKarta);
-                    IgracevaRuka.Text += izvucenaKarta + "|";
+                    if (izvucenaKarta.EndsWith("\u2665") || izvucenaKarta.EndsWith("\u2666"))
+                    {
+                        IgracevaRuka.Inlines.Add(new Run(izvucenaKarta) { Foreground = Brushes.Red });
+                    }
+                    else
+                    {
+                        IgracevaRuka.Inlines.Add(new Run(izvucenaKarta) { Foreground = Brushes.Black });
+                    }
                     RukaIgraca.Add(izvucenaKarta);
                 }
                 else
                 {
                     Console.WriteLine("Protivnikova karta " + izvucenaKarta);
-                    ProtivnikovaRuka.Text += izvucenaKarta + "|";
+                    if (izvucenaKarta.EndsWith("\u2665") || izvucenaKarta.EndsWith("\u2666"))
+                    {
+                        ProtivnikovaRuka.Inlines.Add(new Run(izvucenaKarta) { Foreground = Brushes.Red });
+                    }
+                    else
+                    {
+                        ProtivnikovaRuka.Inlines.Add(new Run(izvucenaKarta) { Foreground = Brushes.Black });
+                    }
                     RukaProtivnika.Add(izvucenaKarta);
                 }
                 Deck = tempDeck;
@@ -113,13 +127,27 @@ namespace Casino
             if (osoba == "Igrac")
             {
                 Console.WriteLine("Igraceva Karta: " + izvucenaKarta);
-                IgracevaRuka.Text += izvucenaKarta + "|";
+                if (izvucenaKarta.EndsWith("\u2665") || izvucenaKarta.EndsWith("\u2666"))
+                {
+                    IgracevaRuka.Inlines.Add(new Run(izvucenaKarta) { Foreground = Brushes.Red });
+                }
+                else
+                {
+                    IgracevaRuka.Inlines.Add(new Run(izvucenaKarta) { Foreground = Brushes.Black });
+                }
                 RukaIgraca.Add(izvucenaKarta);
             }
             else if (osoba == "Protivnik")
             {
                 Console.WriteLine("Protivnikova karta " + izvucenaKarta);
-                ProtivnikovaRuka.Text += izvucenaKarta + "|";
+                if (izvucenaKarta.EndsWith("\u2665") || izvucenaKarta.EndsWith("\u2666"))
+                {
+                    ProtivnikovaRuka.Inlines.Add(new Run(izvucenaKarta) { Foreground = Brushes.Red });
+                }
+                else
+                {
+                    ProtivnikovaRuka.Inlines.Add(new Run(izvucenaKarta) { Foreground = Brushes.Black });
+                }
                 RukaProtivnika.Add(izvucenaKarta);
             }
             Deck = tempDeck;
