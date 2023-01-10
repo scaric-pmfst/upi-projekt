@@ -25,7 +25,8 @@ namespace Casino
         List<string> Deck = new List<string>();
         List<string> RukaIgraca = new List<string>();
         List<string> RukaProtivnika = new List<string>();
-        int JakostRukeIgraca, JakostRukeProtivnika, ulozeniNovac;
+        int JakostRukeIgraca, JakostRukeProtivnika;
+        double ulozeniNovac;
         bool IgrajBlackJack = false;
         bool IgracImaAsa, ProtivnikImaAsa;
         double TrenutniChipovi;
@@ -165,7 +166,6 @@ namespace Casino
                 Console.WriteLine("Brojanje ruke igrača.");
                 foreach (string karta in RukaIgraca)
                 {
-                    Console.WriteLine("Karta: " + karta);
                     switch (karta)
                     {
                         default: //Ako je karta 2-9
@@ -191,9 +191,9 @@ namespace Casino
                             temp = temp + 10;
                             break;
                     }
-                    Console.WriteLine("Trenutna jakost ruke: " + temp);
                 }
                 JakostRukeIgraca = temp;
+                Console.WriteLine("Karte igrača: " + string.Join(", ", RukaIgraca));
                 Console.WriteLine("Jakost ruke nakon brojanja: " + JakostRukeIgraca);
             }
             else if (osoba == "Protivnik")
@@ -201,7 +201,6 @@ namespace Casino
                 Console.WriteLine("Brojanje ruke protivnika");
                 foreach (string karta in RukaProtivnika)
                 {
-                    Console.WriteLine("Karta: " + karta);
                     switch (karta)
                     {
                         default: //Ako je karta 2-9
@@ -227,9 +226,9 @@ namespace Casino
                             temp = temp + 10;
                             break;
                     }
-                    Console.WriteLine("Trenutna jakost ruke: " + temp);
                 }
                 JakostRukeProtivnika = temp;
+                Console.WriteLine("Karte protivnika: " + string.Join(",", RukaProtivnika));
                 Console.WriteLine("Jakost ruke nakon brojanja: " + JakostRukeProtivnika);
             }
         }
@@ -340,7 +339,7 @@ namespace Casino
                 }
                 try
                 {
-                    ulozeniNovac = int.Parse(Ulog.Text);
+                    ulozeniNovac = double.Parse(Ulog.Text);
                 }
                 catch (Exception)
                 {
@@ -363,6 +362,7 @@ namespace Casino
                 MessageBox.Show("Igra je u tijeku");
                 return;
             }
+            Console.WriteLine("Trenutno ulog: " + ulozeniNovac);
         }
 
         private void Hit_Click(object sender, RoutedEventArgs e)
