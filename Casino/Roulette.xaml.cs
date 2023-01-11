@@ -23,8 +23,10 @@ namespace Casino
         Dictionary<string, double> ulog = new Dictionary<string, double>();
         List<string> ulozeneStvari = new List<string>();
         List<string> SvojstvaDobivenogBroja = new List<string>();
-        double ulozeniNovac;
-        double ukupniUlog = 0;
+        double ulozeniNovac, trenutniChipovi;
+        double dobiveniUlog = 0;
+        double dobitak = 0;
+        int brojUloga;
         double TrenutniChipovi;
 
         public Roulette()
@@ -46,6 +48,7 @@ namespace Casino
         private void DodavanjeBrojeva()
         {
             Console.WriteLine("Metoda DodavanjeBrojeva.");
+            Brojevi.Items.Add("");
             for (int i = 0; i < 11; i++)
             {
                 if (i == 0)
@@ -115,7 +118,7 @@ namespace Casino
             Console.WriteLine("Metoda ulogNovca.");
             ulozeneStvari.Clear();
             int brojUloga = 0;
-            if (Brojevi.SelectedIndex > -1)
+            if (Brojevi.SelectedIndex > 0)
             {
                 ulozeneStvari.Add(Brojevi.SelectedItem.ToString());
                 if (!ulog.ContainsKey(Brojevi.SelectedItem.ToString()))
@@ -240,6 +243,55 @@ namespace Casino
                 Console.WriteLine(item + ":" + ulog[item]);
             }
         }
+        //Metoda kojom provjeravamo uloge sa svojstvima broja
+        private void ProvjeraUloga(int broj)
+        {
+            foreach (string svojstvo in SvojstvaDobivenogBroja)
+            {
+                if (ulog.ContainsKey(svojstvo))
+                {
+                    dobiveniUlog += ulog[svojstvo];
+                    ProvjeraDobitka(svojstvo);
+                }
+            }
+            trenutniChipovi = Math.Round(trenutniChipovi + dobiveniUlog + dobitak, 3);
+            Stanje.Text = trenutniChipovi.ToString() + "€";
+        }
+
+        //Metoda pomoću koje izračunavano dobitak za svako pogoođeno svojstvo pobjedničkog broja
+        private void ProvjeraDobitka(string svojstvo)
+        {
+            switch (svojstvo)
+            {
+                case "Paran":
+                case "Neparan":
+                case "Low":
+                case "High":
+                    dobitak += ulog[svojstvo] * 0.5;
+                    break;
+                case "Crvena":
+                case "Crna":
+                    dobitak += ulog[svojstvo] * 0.33;
+                    break;
+                case "Zelena":
+                    dobitak += ulog[svojstvo] * 0.66;
+                    break;
+                default:
+                    dobitak += ulog[svojstvo] * 0.27;
+                    break;
+            }
+        }
+
+        //Metoda pomoću koje čistimo sve varijable za ulaganje nakon završetka igre
+        private void Ocisti()
+        {
+            dobiveniUlog = 0;
+            dobitak = 0;
+            ulog.Clear();
+            ulozeneStvari.Clear();
+            SvojstvaDobivenogBroja.Clear();
+            PobjednickiBroj.Inlines.Clear();
+        }
 
         private void Dugme_Ulog_Click(object sender, RoutedEventArgs e)
         {
@@ -262,16 +314,23 @@ namespace Casino
                 MessageBox.Show("Ulog ne može biti 0.");
                 return;
             }
-            int brojUloga = BrojUloga();
-            ukupniUlog += ulozeniNovac;
-            double raspodjeljeniUlog = ulozeniNovac / brojUloga;
-            Console.WriteLine("Raspodjeljeni Ulog: " + raspodjeljeniUlog.ToString());
-            Ulozi(raspodjeljeniUlog);
+            if (ulozeniNovac > trenutniChipovi)
+            {
+                MessageBox.Show("Nemate toliko chipova.");
+                return;
+            }
+            brojUloga = BrojUloga();
+            if (brojUloga > 0)
+            {
+                double raspodjeljeniUlog = ulozeniNovac / brojUloga;
+                trenutniChipovi -= ulozeniNovac;
+                Stanje.Text = trenutniChipovi.ToString() + "€";
+                Console.WriteLine("Raspodjeljeni Ulog: " + raspodjeljeniUlog.ToString());
+                Ulozi(raspodjeljeniUlog);
+            }
         }
         private void Igraj_Click(object sender, RoutedEventArgs e)
         {
-            PobjednickiBroj.Inlines.Clear();
-            SvojstvaDobivenogBroja.Clear();
             Random r = new Random();
             int broj = r.Next(0, 37);
             switch (brojevi[broj])
@@ -287,7 +346,8 @@ namespace Casino
                     break;
             }
             ProvjeraBroja(broj);
-            ukupniUlog = 0;
+            ProvjeraUloga(broj);
+            Ocisti();
         }
     }
 }
