@@ -19,37 +19,38 @@ namespace Casino
     /// </summary>
     public partial class GlavniMeni : Window
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         public GlavniMeni()
         {
             InitializeComponent();
         }
-        
 
         //Događaji
         //Događaj kada se stisne dugme "Igraj BlackJack"
         private void IgrajBlackJack_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("BlackJack je pokrenut.");
+            Logger.Info("BlackJack je pokrenut.");
             BlackJack BlackJack_Prozor = new BlackJack();
             this.Visibility = Visibility.Hidden;
             BlackJack_Prozor.ShowDialog();
             this.Visibility = Visibility.Visible;
             BlackJack_Prozor.Close();
             Chipovi.Text = BlackJack_Prozor.Stanje.Text;
-            Console.WriteLine("BlackJack je ugašen.");
+            Logger.Info("BlackJack je ugašen.");
         }
 
         //Događaj kada se stisne dugme "Igraj Roulette"
         private void IgrajRoulette_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("Roulette je pokrenut.");
+            Logger.Info("Roulette je pokrenut.");
             Roulette Roulette_Prozor = new Roulette();
             this.Visibility = Visibility.Hidden;
             Roulette_Prozor.ShowDialog();
             this.Visibility = Visibility.Visible;
             Roulette_Prozor.Close();
             Chipovi.Text = Roulette_Prozor.Stanje.Text;
-            Console.WriteLine("Roulette je ugašen.");
+            Logger.Info("Roulette je ugašen.");
         }
 
         //Događaj kada se stisne dugme "Kupi Čipove"

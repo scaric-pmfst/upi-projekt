@@ -19,6 +19,7 @@ namespace Casino
     /// </summary>
     public partial class KupiChipove : Window
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public double TrenutniChipovi;
         double kupljeniChipovi;
         public KupiChipove()
@@ -31,7 +32,7 @@ namespace Casino
         private void TrenutnoStanje()
         {
             TrenutniChipovi = double.Parse(((GlavniMeni)Application.Current.MainWindow).Chipovi.Text.Replace("€", ""));
-            Console.WriteLine("Trenutno imate " + TrenutniChipovi + " čipova.");
+            Logger.Info("Trenutno imate " + TrenutniChipovi + " čipova.");
         }
 
         //Događaj pomoću kojeg provjeravamo unos te isplatu čipova ako je unos dobar
@@ -40,6 +41,7 @@ namespace Casino
             if (KupljeniChipovi.Text.Length < 1)
             {
                 MessageBox.Show("Niste nista unijeli.");
+                Logger.Info("Korisnik nije ništa unio.");
                 return;
             }
             try
@@ -49,6 +51,7 @@ namespace Casino
             catch
             {
                 MessageBox.Show("Niste dobro unijeli broj.");
+                Logger.Info("Korisnik nije dobro unio broj.");
                 return;
             }
             TrenutniChipovi += kupljeniChipovi;

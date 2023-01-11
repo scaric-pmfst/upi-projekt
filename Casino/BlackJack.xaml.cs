@@ -30,8 +30,7 @@ namespace Casino
         bool IgrajBlackJack = false;
         bool doubleDown = false;
         bool IgracImaAsa, ProtivnikImaAsa;
-        double TrenutniChipovi;
-
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public BlackJack()
         {
@@ -43,15 +42,14 @@ namespace Casino
         private void TrenutnoStanje()
         {
             Stanje.Text = ((GlavniMeni)Application.Current.MainWindow).Chipovi.Text;
-            TrenutniChipovi = double.Parse(((GlavniMeni)Application.Current.MainWindow).Chipovi.Text.Replace("€", ""));
+            trenutniChipovi = double.Parse(((GlavniMeni)Application.Current.MainWindow).Chipovi.Text.Replace("€", ""));
         }
         //Metode
 
         //Metoda pomoću koje cistimo ruke igrača i protivnika
         private void OcistiRuke()
         {
-            
-            Console.WriteLine("Metoda OcistiRuke.");
+            Logger.Info("Metoda OcistiRuke pokrenuta.");
             RukaProtivnika.Clear();
             RukaIgraca.Clear();
             ProtivnikovaRuka.Inlines.Clear();
@@ -60,29 +58,29 @@ namespace Casino
             IgracImaAsa = false;
             ProtivnikImaAsa = false;
             doubleDown = false;
-            Console.WriteLine("Metoda OcistiRuke izvrsena");
+            Logger.Info("Metoda OcistiRuke izvršena.");
         }
 
         //Metoda pomoću koje pravimo novi dek
         private void NapraviDeck()
         {
-            Console.WriteLine("NapraviDeck Metoda.");
+            Logger.Info("Metoda NapraviDeck pokrenuta.");
             Deck.Clear();
             foreach (char boja in karte.Boje)
             {
                 foreach (string broj in karte.Brojevi)
                 {
-                    Console.WriteLine(broj + boja);
+                    Logger.Info(broj + boja);
                     Deck.Add(broj + boja);
                 }
             }
-            Console.WriteLine("Metoda NapraviDeck izvrsena.");
+            Logger.Info("Metoda NapraviDeck izvršena.");
         }
 
         //Metoda pomoću koje dijelimo početne karte igraču i protivniku
         private void PocetnaRuka()
         {
-            Console.WriteLine("Metoda PocetnaRuka.");
+            Logger.Info("Metoda PocetnaRuka pokrenuta.");
             for (int i = 0; i < 3; i++)
             {
                 List<string> tempDeck = Deck;
@@ -90,7 +88,7 @@ namespace Casino
                 tempDeck.Remove(izvucenaKarta);
                 if (i != 1)
                 {
-                    Console.WriteLine("Igraceva Karta: " + izvucenaKarta);
+                    Logger.Info("Igračeva karta: " + izvucenaKarta);
                     if (izvucenaKarta.EndsWith("\u2665") || izvucenaKarta.EndsWith("\u2666"))
                     {
                         IgracevaRuka.Inlines.Add(new Run(izvucenaKarta) { Foreground = Brushes.Red });
@@ -103,7 +101,7 @@ namespace Casino
                 }
                 else
                 {
-                    Console.WriteLine("Protivnikova karta " + izvucenaKarta);
+                    Logger.Info("Protivnikova karta: " + izvucenaKarta);
                     if (izvucenaKarta.EndsWith("\u2665") || izvucenaKarta.EndsWith("\u2666"))
                     {
                         ProtivnikovaRuka.Inlines.Add(new Run(izvucenaKarta) { Foreground = Brushes.Red });
@@ -115,21 +113,21 @@ namespace Casino
                     RukaProtivnika.Add(izvucenaKarta);
                 }
                 Deck = tempDeck;
-                Console.WriteLine("Trenutno je u deku " + Deck.Count + " karata.");
+                Logger.Info("Trenutno je u deku " + Deck.Count + " karata.");
             }
-            Console.WriteLine("Metoda PocetnaRuka izvrsena.");
+            Logger.Info("Metoda PocetnaRuka izvršena.");
         }
 
         //Metoda pomoću koje vučemo kartu
         private void VuciKartu(string osoba)
         {
-            Console.WriteLine("Metoda VuciKartu.");
+            Logger.Info("Metoda VuciKartu pokrenuta.");
             List<string> tempDeck = Deck;
             string izvucenaKarta = tempDeck[r.Next(0, tempDeck.Count)];
             tempDeck.Remove(izvucenaKarta);
             if (osoba == "Igrac")
             {
-                Console.WriteLine("Igraceva Karta: " + izvucenaKarta);
+                Logger.Info("Igračeva karta: " + izvucenaKarta);
                 if (izvucenaKarta.EndsWith("\u2665") || izvucenaKarta.EndsWith("\u2666"))
                 {
                     IgracevaRuka.Inlines.Add(new Run(izvucenaKarta) { Foreground = Brushes.Red });
@@ -142,7 +140,7 @@ namespace Casino
             }
             else if (osoba == "Protivnik")
             {
-                Console.WriteLine("Protivnikova karta " + izvucenaKarta);
+                Logger.Info("Protivnikova karta: " + izvucenaKarta);
                 if (izvucenaKarta.EndsWith("\u2665") || izvucenaKarta.EndsWith("\u2666"))
                 {
                     ProtivnikovaRuka.Inlines.Add(new Run(izvucenaKarta) { Foreground = Brushes.Red });
@@ -154,18 +152,18 @@ namespace Casino
                 RukaProtivnika.Add(izvucenaKarta);
             }
             Deck = tempDeck;
-            Console.WriteLine("Trenutno je u deku " + Deck.Count + " karata.");
-            Console.WriteLine("Metoda VuciKartu izvrsena.");
+            Logger.Info("Trenutno je u deku " + Deck.Count + " karata.");
+            Logger.Info("Metoda VuciKartu izvršena.");
         }
 
         //Metoda pomoću koje brojimo jakost ruke igrača i protivnika
         private void BrojacRuke(string osoba)
         {
-            Console.WriteLine("BrojacRuke.");
+            Logger.Info("Metoda BrojacRuke pokrenuta.");
             int temp = 0;
             if (osoba == "Igrac")
             {
-                Console.WriteLine("Brojanje ruke igrača.");
+                Logger.Info("Brojanje ruke igrača.");
                 foreach (string karta in RukaIgraca)
                 {
                     switch (karta)
@@ -195,12 +193,12 @@ namespace Casino
                     }
                 }
                 JakostRukeIgraca = temp;
-                Console.WriteLine("Karte igrača: " + string.Join(", ", RukaIgraca));
-                Console.WriteLine("Jakost ruke nakon brojanja: " + JakostRukeIgraca);
+                Logger.Info("Karte igrača: " + string.Join(", ", RukaIgraca));
+                Logger.Info("Jakost ruke nakon brojanja: " + JakostRukeIgraca);
             }
             else if (osoba == "Protivnik")
             {
-                Console.WriteLine("Brojanje ruke protivnika");
+                Logger.Info("Brojanje ruke protivnika.");
                 foreach (string karta in RukaProtivnika)
                 {
                     switch (karta)
@@ -230,19 +228,20 @@ namespace Casino
                     }
                 }
                 JakostRukeProtivnika = temp;
-                Console.WriteLine("Karte protivnika: " + string.Join(",", RukaProtivnika));
-                Console.WriteLine("Jakost ruke nakon brojanja: " + JakostRukeProtivnika);
+                Logger.Info("Karte protivnika: " + string.Join(",", RukaProtivnika));
+                Logger.Info("Jakost ruke nakon brojanja: " + JakostRukeProtivnika);
             }
         }
 
         //Metoda pomoću koje proveravamo jakost ruke igrača, ako je veća od 21, igrač je izgubio
-        //Metoda pomoću koje proveravamo jakost ruke igrača
         private void ProvjeraRukeIgraca()
         {
+            Logger.Info("Metoda ProvjeraRukeIgraca pokrenuta.");
             if (JakostRukeIgraca > 21)
             {
                 if (!IgracImaAsa)
                 {
+                    Logger.Info("Korisnik je izgubio.");
                     MessageBox.Show("Izgubio si. Više sreće drugi put.");
                     IgrajBlackJack = false;
                 }
@@ -250,6 +249,7 @@ namespace Casino
                 {
                     if ((JakostRukeIgraca - 10) > 21)
                     {
+                        Logger.Info("Korisnik je izgubio.");
                         MessageBox.Show("Izgubio si. Više sreće drugi put.");
                         IgrajBlackJack = false;
                     }
@@ -257,16 +257,19 @@ namespace Casino
             }
             else if (JakostRukeIgraca == 21 && RukaIgraca.Count == 2)
             {
+                Logger.Info("Korisnik je dobio BlackJack.");
                 MessageBox.Show("BlackJack. Dobio si.");
                 trenutniChipovi = trenutniChipovi + ulozeniNovac + ulozeniNovac * 1.7;
                 Stanje.Text = trenutniChipovi.ToString() + "€";
                 IgrajBlackJack = false;
             }
+            Logger.Info("Metoda ProvjeraJakostiRuke izvršena.");
         }
 
         //Metoda kojom program kontrolira protivnika
         private void ProtivnikIgra()
         {
+            Logger.Info("Metoda ProtivnikIgra pokrenuta.");
             while (true)
             {
                 VuciKartu("Protivnik");
@@ -276,18 +279,21 @@ namespace Casino
                     break;
                 }
             }
+            Logger.Info("Metoda ProtivnikIgra izvršena.");
             ProvjeraRuku();
         }
 
         //Metoda kojom provjeravamo protivnikovu ruku i uspoređujemo jakosti obje ruke
         private void ProvjeraRuku()
         {
+            Logger.Info("Metoda ProvjeraRuku pokrenuta.");
             if (JakostRukeProtivnika > 21)
             {
                 if (ProtivnikImaAsa)
                 {
                     if ((JakostRukeProtivnika - 10) > 21)
                     {
+                        Logger.Info("Korisnik je dobio.");
                         MessageBox.Show("Dobili ste.");
                         if (doubleDown)
                         {
@@ -304,11 +310,13 @@ namespace Casino
                     {
                         if ((JakostRukeProtivnika - 10) > JakostRukeIgraca)
                         {
+                            Logger.Info("Korisnik je izgubio.");
                             MessageBox.Show("Izgubio si. Više sreće drugi put.");
                             IgrajBlackJack = false;
                         }
                         else
                         {
+                            Logger.Info("Korisnik je dobio.");
                             MessageBox.Show("Dobili ste.");
                             if (doubleDown)
                             {
@@ -325,6 +333,7 @@ namespace Casino
                 }
                 else
                 {
+                    Logger.Info("Korisnik je dobio.");
                     MessageBox.Show("Dobili ste.");
                     if (doubleDown)
                     {
@@ -342,6 +351,7 @@ namespace Casino
             {
                 if (JakostRukeProtivnika > JakostRukeIgraca)
                 {
+                    Logger.Info("Korisnik je izgubio.");
                     MessageBox.Show("Izgubio si. Više sreće drugi put.");
                     IgrajBlackJack = false;
                 }
@@ -361,6 +371,7 @@ namespace Casino
                 }
                 else
                 {
+                    Logger.Info("Korisnik je dobio.");
                     MessageBox.Show("Dobili ste.");
                     if (doubleDown)
                     {
@@ -374,15 +385,18 @@ namespace Casino
                     IgrajBlackJack = false;
                 }
             }
+            Logger.Info("Metoda ProvjeraRuku izvršena.");
         }
 
         //Događaji
         private void Igraj_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Info("Dugme Igraj pokrenuta.");
             if (!IgrajBlackJack)
             {
                 if (Ulog.Text.Length < 1)
                 {
+                    Logger.Info("Korisnik nije ništa uložio.");
                     MessageBox.Show("Niste ništa uložili.");
                     return;
                 }
@@ -392,16 +406,19 @@ namespace Casino
                 }
                 catch (Exception)
                 {
+                    Logger.Info("Korisnik nije dobro unio novac.");
                     MessageBox.Show("Niste dobro unijeli novac.");
                     return;
                 }
                 if (ulozeniNovac == 0)
                 {
+                    Logger.Info("Korisnik je pokušao uložiti 0.");
                     MessageBox.Show("Ulog ne može biti 0.");
                     return;
                 }
                 if (ulozeniNovac > trenutniChipovi)
                 {
+                    Logger.Info("Korisnik nema dovoljno čipova.");
                     MessageBox.Show("Nemate toliko chipova.");
                     return;
                 }
@@ -418,11 +435,12 @@ namespace Casino
                 MessageBox.Show("Igra je u tijeku");
                 return;
             }
-            Console.WriteLine("Trenutno ulog: " + ulozeniNovac);
+            Logger.Info("Trenutni ulog: " + ulozeniNovac);
         }
 
         private void Hit_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Info("Dugme Hit stisnuto.");
             if (IgrajBlackJack)
             {
                 VuciKartu("Igrac");
@@ -438,6 +456,7 @@ namespace Casino
 
         private void Stand_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Info("Dugme Stand stisnuto.");
             if (IgrajBlackJack)
             {
                 doubleDown = true;
@@ -461,6 +480,7 @@ namespace Casino
 
         private void DoubleDown_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Info("Dugme DoubleDown stisnuto.");
             if (IgrajBlackJack)
             {
                 VuciKartu("Igrac");
