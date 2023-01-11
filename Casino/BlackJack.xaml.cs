@@ -26,8 +26,9 @@ namespace Casino
         List<string> RukaIgraca = new List<string>();
         List<string> RukaProtivnika = new List<string>();
         int JakostRukeIgraca, JakostRukeProtivnika;
-        double ulozeniNovac;
+        double ulozeniNovac, trenutniChipovi;
         bool IgrajBlackJack = false;
+        bool doubleDown = false;
         bool IgracImaAsa, ProtivnikImaAsa;
         double TrenutniChipovi;
 
@@ -58,6 +59,7 @@ namespace Casino
             JakostRukeIgraca = 0;
             IgracImaAsa = false;
             ProtivnikImaAsa = false;
+            doubleDown = false;
             Console.WriteLine("Metoda OcistiRuke izvrsena");
         }
 
@@ -256,6 +258,8 @@ namespace Casino
             else if (JakostRukeIgraca == 21 && RukaIgraca.Count == 2)
             {
                 MessageBox.Show("BlackJack. Dobio si.");
+                trenutniChipovi = trenutniChipovi + ulozeniNovac + ulozeniNovac * 1.7;
+                Stanje.Text = trenutniChipovi.ToString() + "€";
                 IgrajBlackJack = false;
             }
         }
@@ -285,6 +289,15 @@ namespace Casino
                     if ((JakostRukeProtivnika - 10) > 21)
                     {
                         MessageBox.Show("Dobili ste.");
+                        if (doubleDown)
+                        {
+                            trenutniChipovi = trenutniChipovi + ulozeniNovac * 4;
+                        }
+                        else
+                        {
+                            trenutniChipovi = trenutniChipovi + ulozeniNovac + ulozeniNovac * 1.5;
+                        }
+                        Stanje.Text = trenutniChipovi.ToString() + "€";
                         IgrajBlackJack = false;
                     }
                     else
@@ -297,6 +310,15 @@ namespace Casino
                         else
                         {
                             MessageBox.Show("Dobili ste.");
+                            if (doubleDown)
+                            {
+                                trenutniChipovi = trenutniChipovi + ulozeniNovac * 4;
+                            }
+                            else
+                            {
+                                trenutniChipovi = trenutniChipovi + ulozeniNovac + ulozeniNovac * 1.5;
+                            }
+                            Stanje.Text = trenutniChipovi.ToString() + "€";
                             IgrajBlackJack = false;
                         }
                     }
@@ -304,6 +326,15 @@ namespace Casino
                 else
                 {
                     MessageBox.Show("Dobili ste.");
+                    if (doubleDown)
+                    {
+                        trenutniChipovi = trenutniChipovi + ulozeniNovac * 4;
+                    }
+                    else
+                    {
+                        trenutniChipovi = trenutniChipovi + ulozeniNovac + ulozeniNovac * 1.5;
+                    }
+                    Stanje.Text = trenutniChipovi.ToString() + "€";
                     IgrajBlackJack = false;
                 }
             }
@@ -317,11 +348,29 @@ namespace Casino
                 else if (JakostRukeProtivnika == JakostRukeIgraca)
                 {
                     MessageBox.Show("Neriješeno.");
+                    if (doubleDown)
+                    {
+                        trenutniChipovi += ulozeniNovac * 2;
+                    }
+                    else
+                    {
+                        trenutniChipovi += ulozeniNovac;
+                    }
+                    Stanje.Text = trenutniChipovi.ToString() + "€";
                     IgrajBlackJack = false;
                 }
                 else
                 {
                     MessageBox.Show("Dobili ste.");
+                    if (doubleDown)
+                    {
+                        trenutniChipovi = trenutniChipovi + ulozeniNovac * 4;
+                    }
+                    else
+                    {
+                        trenutniChipovi = trenutniChipovi + ulozeniNovac + ulozeniNovac * 1.5;
+                    }
+                    Stanje.Text = trenutniChipovi.ToString() + "€";
                     IgrajBlackJack = false;
                 }
             }
@@ -351,6 +400,13 @@ namespace Casino
                     MessageBox.Show("Ulog ne može biti 0.");
                     return;
                 }
+                if (ulozeniNovac > trenutniChipovi)
+                {
+                    MessageBox.Show("Nemate toliko chipova.");
+                    return;
+                }
+                trenutniChipovi -= ulozeniNovac;
+                Stanje.Text = trenutniChipovi.ToString() + "€";
                 OcistiRuke();
                 NapraviDeck();
                 PocetnaRuka();
@@ -384,6 +440,9 @@ namespace Casino
         {
             if (IgrajBlackJack)
             {
+                doubleDown = true;
+                trenutniChipovi -= ulozeniNovac;
+                Stanje.Text = trenutniChipovi.ToString() + "€";
                 BrojacRuke("Igrac");
                 ProvjeraRukeIgraca();
                 ProtivnikIgra();
