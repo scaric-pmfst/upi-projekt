@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace Casino
 {
@@ -24,6 +25,20 @@ namespace Casino
         public GlavniMeni()
         {
             InitializeComponent();
+            OcistiLog();
+        }
+
+        //Metoda pomoću koje čistimo log nakon što datoteka naraste previše
+        private void OcistiLog()
+        {
+            if (File.Exists(Directory.GetCurrentDirectory() + @"\Log.txt"))
+            {
+                FileInfo Log = new FileInfo(Directory.GetCurrentDirectory() + @"\Log.txt");
+                if (Log.Length > 10000000)
+                {
+                    File.Delete(Directory.GetCurrentDirectory() + @"\Log.txt");
+                }
+            }
         }
 
         //Događaji

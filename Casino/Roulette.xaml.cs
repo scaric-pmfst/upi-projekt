@@ -252,7 +252,7 @@ namespace Casino
             foreach (string item in ulozeneStvari)
             {
                 ulog[item] += raspodjeljeniUlog;
-                Logger.Info("Uloženo je na " + item + ", a ulog je" + ulog[item] + "€.");
+                Logger.Info("Uloženo je na " + item + ", a ulog je " + ulog[item] + " €.");
             }
             Logger.Info("Metoda Ulozi izvršena.");
         }
