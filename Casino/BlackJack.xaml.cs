@@ -459,12 +459,8 @@ namespace Casino
             Logger.Info("Dugme Stand stisnuto.");
             if (IgrajBlackJack)
             {
-                doubleDown = true;
-                trenutniChipovi -= ulozeniNovac;
-                Stanje.Text = trenutniChipovi.ToString() + "€";
                 BrojacRuke("Igrac");
                 ProvjeraRukeIgraca();
-                ProtivnikIgra();
                 if (IgrajBlackJack)
                 {
                     ProtivnikIgra();
@@ -483,12 +479,22 @@ namespace Casino
             Logger.Info("Dugme DoubleDown stisnuto.");
             if (IgrajBlackJack)
             {
-                VuciKartu("Igrac");
-                BrojacRuke("Igrac");
-                ProvjeraRukeIgraca();
-                if (IgrajBlackJack)
+                if (trenutniChipovi - ulozeniNovac < 0)
                 {
-                    ProtivnikIgra();
+                    MessageBox.Show("Nemate dovoljno novca za DoubleDown.");
+                    return;
+                } else
+                {
+                    doubleDown = true;
+                    trenutniChipovi -= ulozeniNovac;
+                    Stanje.Text = trenutniChipovi.ToString() + "€";
+                    VuciKartu("Igrac");
+                    BrojacRuke("Igrac");
+                    ProvjeraRukeIgraca();
+                    if (IgrajBlackJack)
+                    {
+                        ProtivnikIgra();
+                    }
                 }
             }
             else
